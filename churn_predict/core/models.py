@@ -4,10 +4,7 @@ from django.db import models
 
 # Định nghĩa Model "User" trỏ đến bảng "user" có sẵn
 class User(models.Model):
-    # Cột ID (viết hoa)
-    ID = models.AutoField(primary_key=False, db_column='ID') 
-    
-    # Các cột còn lại
+    id = models.AutoField(primary_key=True, db_column='ID')
     last_name = models.CharField(max_length=16)
     first_middle_name = models.CharField(max_length=32)
     email = models.CharField(max_length=45, unique=False)

@@ -30,7 +30,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -47,6 +47,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -126,19 +127,8 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.2/howto/static-files/
-
-# URL để truy cập file (ví dụ: /static/images/logo.png)
-STATIC_URL = 'static/'
-
-# Đường dẫn thư mục mà Django sẽ tìm file static
-# (Sử dụng cú pháp / của pathlib, vì BASE_DIR là đối tượng Path)
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-]
-
-# Thư mục sẽ chứa tất cả các file tĩnh khi deploy (chạy 'collectstatic')
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')] # Thư mục chứa file gốc
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') # Nơi Render sẽ gom file về
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

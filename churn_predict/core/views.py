@@ -236,7 +236,7 @@ def login_view(request):
         if password_from_form == password_from_db:
             # Mật khẩu khớp!
             # Lưu user_id và email vào session để ghi nhớ đăng nhập
-            request.session['user_id'] = user.ID # Dùng 'ID' (viết hoa) như trong model
+            request.session['user_id'] = user.id
             request.session['user_email'] = user.email
             full_name = f"{user.first_middle_name} {user.last_name}"
             request.session['user_full_name'] = full_name

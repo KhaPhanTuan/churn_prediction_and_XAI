@@ -1,0 +1,14 @@
+# Bỏ qua thư mục ảo và file hệ thống
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+.DS_Store
+.env
+
+# Bỏ file tạm của VS Code và Windows
+.vscode/
+Thumbs.db
+

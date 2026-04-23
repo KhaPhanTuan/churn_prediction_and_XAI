@@ -16,7 +16,7 @@ Run:
 """
 
 import os
-import pickle
+import joblib
 import warnings
 warnings.filterwarnings("ignore")
 
@@ -160,9 +160,8 @@ def fit_and_evaluate_models(X_train, X_test, y_train, y_test, preprocessor):
 
         # Save model
         model_path = os.path.join(OUTPUT_DIR, f"{name}.pkl")
-        with open(model_path, 'wb') as f:
-            pickle.dump(pipeline, f)
-        print(f"Saved model to {model_path}")
+        joblib.dump(pipeline, model_path)
+        print(f"Saved model to {model_path} using joblib")
 
         # Predict
         y_pred = pipeline.predict(X_test)

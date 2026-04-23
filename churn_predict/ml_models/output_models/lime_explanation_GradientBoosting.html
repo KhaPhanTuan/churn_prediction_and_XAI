@@ -37089,25 +37089,25 @@
 /***/ })
 /******/ ]);
 //# sourceMappingURL=bundle.js.map </script></head><body>
-        <div class="lime top_div" id="top_divG0DCOZEIBUVNSS7"></div>
+        <div class="lime top_div" id="top_divDDSUXNZHKJUTZ2J"></div>
         
         <script>
-        var top_div = d3.select('#top_divG0DCOZEIBUVNSS7').classed('lime top_div', true);
+        var top_div = d3.select('#top_divDDSUXNZHKJUTZ2J').classed('lime top_div', true);
         
             var pp_div = top_div.append('div')
                                 .classed('lime predict_proba', true);
             var pp_svg = pp_div.append('svg').style('width', '100%');
-            var pp = new lime.PredictProba(pp_svg, ["NoChurn", "Churn"], [1.4795452196736392e-08, 0.9999999852045478]);
+            var pp = new lime.PredictProba(pp_svg, ["NoChurn", "Churn"], [0.9798304760834927, 0.020169523916507254]);
             
         
         var exp_div;
             var exp = new lime.Explanation(["NoChurn", "Churn"]);
         
                 exp_div = top_div.append('div').classed('lime explanation', true);
-                exp.show([["InternetService_DSL <= 0.00", 0.49509891140618967], ["0.00 < InternetService_Fiber optic <= 1.00", 0.4546148403444666], ["MonthlyCharges > 0.38", 0.3563927117024973], ["StreamingMovies_Yes <= 0.00", -0.02161041599920488], ["0.00 < gender_Male <= 1.00", 0.020444447856280974], ["0.03 < TotalCharges <= 0.83", -0.019735074406762768], ["gender_Female <= 0.00", 0.015760838920260995], ["DeviceProtection_Yes <= 0.00", -0.015258443877163994], ["PaymentMethod_Bank transfer (automatic) <= 0.00", 0.014339816954408884], ["MultipleLines_No phone service <= 0.00", 0.014052895328094287]], 1, exp_div);
+                exp.show([["Contract_Month-to-month <= 0.00", -0.21174077855923304], ["MonthlyCharges > 0.77", 0.1266835835320715], ["TotalCharges > 0.81", -0.09783416146119522], ["tenure > 1.12", -0.09328278915384774], ["0.00 < InternetService_Fiber optic <= 1.00", 0.08417322358431995], ["OnlineSecurity_No <= 0.00", -0.0744043593736189], ["MultipleLines_No <= 0.00", 0.0729687887869187], ["SeniorCitizen <= -0.48", -0.07034493025585745], ["Contract_Two year > 0.00", -0.05472597680303525], ["PaymentMethod_Electronic check <= 0.00", -0.051581373049849964]], 1, exp_div);
                 
         var raw_div = top_div.append('div');
-            exp.show_raw_tabular([["InternetService_DSL", "0.00", 0.49509891140618967], ["InternetService_Fiber optic", "1.00", 0.4546148403444666], ["MonthlyCharges", "0.78", 0.3563927117024973], ["StreamingMovies_Yes", "0.00", -0.02161041599920488], ["gender_Male", "1.00", 0.020444447856280974], ["TotalCharges", "0.61", -0.019735074406762768], ["gender_Female", "0.00", 0.015760838920260995], ["DeviceProtection_Yes", "0.00", -0.015258443877163994], ["PaymentMethod_Bank transfer (automatic)", "0.00", 0.014339816954408884], ["MultipleLines_No phone service", "0.00", 0.014052895328094287]], 1, raw_div);
+            exp.show_raw_tabular([["Contract_Month-to-month", "0.00", -0.21174077855923304], ["MonthlyCharges", "1.61", 0.1266835835320715], ["TotalCharges", "2.92", -0.09783416146119522], ["tenure", "1.83", -0.09328278915384774], ["InternetService_Fiber optic", "1.00", 0.08417322358431995], ["OnlineSecurity_No", "0.00", -0.0744043593736189], ["MultipleLines_No", "0.00", 0.0729687887869187], ["SeniorCitizen", "-0.48", -0.07034493025585745], ["Contract_Two year", "1.00", -0.05472597680303525], ["PaymentMethod_Electronic check", "0.00", -0.051581373049849964]], 1, raw_div);
         
         </script>
         </body></html>

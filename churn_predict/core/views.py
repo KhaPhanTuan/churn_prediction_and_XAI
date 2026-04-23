@@ -1,6 +1,6 @@
 import time
 from django.templatetags.static import static
-import pickle
+import joblib
 import os
 import pandas as pd
 from django.shortcuts import render, redirect 
@@ -130,8 +130,7 @@ def predict_view(request):
             model_path = GB_MODEL_PATH 
             if not os.path.exists(model_path):
                  raise FileNotFoundError(f"Model file not found at {model_path}")
-            with open(model_path, 'rb') as f:
-                pipeline = pickle.load(f)
+            pipeline = joblib.load(model_path)
 
             data = {
                 'gender': request.POST.get('gender'),
@@ -368,8 +367,7 @@ def set_new_password_view(request):
     return JsonResponse({'success': False, 'error': 'Yêu cầu không hợp lệ.'})
 # HÀM HELPER MỚI: LẤY TỪ PIPELINE (Cần cho LIME) 
 def load_and_clean_for_lime(path):
-    correct_path = os.path.join(settings.BASE_DIR.parent, 'dataset', 'Telco-Customer-Churn.csv')
-
+    correct_path = os.path.join(settings.BASE_DIR, 'dataset', 'Telco-Customer-Churn.csv')
     try:
         df = pd.read_csv(correct_path) # Đọc từ đường dẫn chính xác
     except FileNotFoundError:
@@ -414,8 +412,7 @@ def explain_lime_view(request):
 
         # 2. Load model
         model_path = GB_MODEL_PATH
-        with open(model_path, 'rb') as f:
-            pipeline = pickle.load(f)
+        pipeline = joblib.load(model_path)
 
         # 3. Load dữ liệu nền (background data)
         X, y = load_and_clean_for_lime(None) # Hàm này đã tự biết đường dẫn

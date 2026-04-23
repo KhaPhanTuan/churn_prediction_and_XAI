@@ -261,48 +261,41 @@ def logout_view(request):
     # Quay về trang chủ (trang đăng nhập)
     return redirect('core:index_view') # Sẽ đặt tên URL là 'index_view'
 
-@csrf_exempt # Tạm thời tắt CSRF, vì chúng ta chỉ đọc dữ liệu (GET)
+@csrf_exempt
 def get_dataset_view(request):
-    dataset_key = request.GET.get('dataset', None) # Lấy giá trị từ dropdown
-    
+    dataset_key = request.GET.get('dataset', None)
     data = []
     headers = []
     
     try:
         if dataset_key == 'gender':
-            queryset = Customers.objects.all().values()
             headers = ['customer_id', 'gender', 'is_senior', 'account_tenure_months']
-            data = list(queryset)
+            # Sửa ở đây: thêm *headers vào trong values()
+            data = list(Customers.objects.all().values(*headers))
             
         elif dataset_key == 'churn':
-            queryset = ChurnRecords.objects.all().values()
             headers = ['customer_id', 'is_churned', 'total_transaction_value', 'churn_id']
-            data = list(queryset)
+            data = list(ChurnRecords.objects.all().values(*headers))
 
         elif dataset_key == 'contract':
-            queryset = Contracts.objects.all().values()
             headers = ['customer_id', 'contract_type', 'payment_method', 'contract_id']
-            data = list(queryset)
+            data = list(Contracts.objects.all().values(*headers))
 
         elif dataset_key == 'internet_service':
-            queryset = InternetServices.objects.all().values()
             headers = ['customer_id', 'service_type', 'internet_id']
-            data = list(queryset)
+            data = list(InternetServices.objects.all().values(*headers))
 
         elif dataset_key == 'payment_method':
-            queryset = PaymentMethods.objects.all().values()
             headers = ['method_name', 'monthly_fee', 'auto_payment', 'e_statement', 'payment_id']
-            data = list(queryset)
+            data = list(PaymentMethods.objects.all().values(*headers))
 
         elif dataset_key == 'phone_service':
-            queryset = PhoneServices.objects.all().values()
             headers = ['customer_id', 'has_multiple_lines', 'phone_id']
-            data = list(queryset)
+            data = list(PhoneServices.objects.all().values(*headers))
 
         else:
             return JsonResponse({'error': 'Invalid dataset key'}, status=400)
 
-        # Trả về dữ liệu dưới dạng JSON
         return JsonResponse({'headers': headers, 'rows': data})
 
     except Exception as e:

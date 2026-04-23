@@ -15,7 +15,7 @@ class User(models.Model):
     password = models.CharField(max_length=255) # Theo yêu cầu là varchar(255)
 
     class Meta:
-        managed = False  # Quan trọng: Báo Django không quản lý (tạo/xóa/sửa) bảng này
+        managed = True  # Quan trọng: Báo Django không quản lý (tạo/xóa/sửa) bảng này
         db_table = 'user' # Quan trọng: Tên chính xác của bảng trong MySQL
 
     def __str__(self):
@@ -23,26 +23,26 @@ class User(models.Model):
     
 class Contracts(models.Model):
     # Giả sử 'contract_id' là khóa chính nếu nó là duy nhất,
-    # nhưng chúng ta sẽ dùng 'managed = False' nên chỉ cần định nghĩa
+    # nhưng chúng ta sẽ dùng 'managed = True' nên chỉ cần định nghĩa
     contract_id = models.BigIntegerField(primary_key=True)
     customer_id = models.TextField()
     contract_type = models.TextField()
     payment_method = models.TextField()
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'contracts'
 
 
 class Customers(models.Model):
     # Giả sử 'customer_id' là khóa chính
-    customer_id = models.TextField(primary_key=True)
+    customer_id = models.CharField(max_length=50, primary_key=True)
     gender = models.TextField()
     is_senior = models.BigIntegerField()
     account_tenure_months = models.BigIntegerField()
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'customers'
 
 
@@ -52,7 +52,7 @@ class InternetServices(models.Model):
     service_type = models.TextField()
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'internet_services'
 
 
@@ -64,7 +64,7 @@ class PaymentMethods(models.Model):
     e_statement = models.TextField()
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'payment_methods'
 
 
@@ -74,7 +74,7 @@ class PhoneServices(models.Model):
     has_multiple_lines = models.TextField()
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'phone_services'
 
 
@@ -85,5 +85,5 @@ class ChurnRecords(models.Model):
     total_transaction_value = models.TextField()
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'churn_records'

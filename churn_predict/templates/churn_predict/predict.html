@@ -362,18 +362,22 @@
                 const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
 
                 fetch('/api/explain-lime/', {
-                    method: 'POST', // Dùng POST để bảo mật hơn
+                    method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'X-CSRFToken': csrfToken // Gửi token
-                    },
-                    // Không cần body, vì view sẽ đọc từ session
+                        'X-CSRFToken': csrfToken
+                    }
                 })
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        // JavaScript sẽ đặt 'src' của iframe = đường dẫn URL
-                        limeResultContainer.innerHTML = `<iframe src="${data.url}" style="width: 100%; height: 500px; border: none; border-radius: 8px;"></iframe>`;
+                        // HIỂN THỊ LIME BẰNG SRCDOC
+                        // Nạp trực tiếp chuỗi HTML từ data.html_content vào iframe
+                        limeResultContainer.innerHTML = `
+                            <iframe id="lime-frame" style="width: 100%; height: 600px; border: none; border-radius: 8px;"></iframe>
+                        `;
+                        const iframe = document.getElementById('lime-frame');
+                        iframe.srcdoc = data.html_content; // Đây là chìa khóa để fix lỗi 404
                         
                         explainButton.innerHTML = '<i class="fas fa-check"></i> Done!';
                     } else {

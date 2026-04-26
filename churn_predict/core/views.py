@@ -49,20 +49,21 @@ def index_view(request):
 # Cập nhật 'welcome_view' để kiểm tra đăng nhập 
 # View này là trang 'welcome.html', chỉ xem được SAU KHI đăng nhập
 def welcome_view(request):
-    # Kiểm tra xem 'user_id' có trong session không
     if 'user_id' not in request.session:
-        # Nếu chưa đăng nhập, đá về trang chủ (trang đăng nhập)
-        return redirect('index_view') 
+        return redirect('core:index_view')
 
-    # Lấy tên đầy đủ (user_full_name) từ session 
-    # Lấy tên, nếu không có thì dự phòng là chữ 'User'
-    user_name = request.session.get('user_full_name', 'User') 
-    
+    try:
+        # Lấy user từ database dựa trên ID trong session
+        user = User.objects.get(id=request.session['user_id'])
+        user_name = f"{user.first_middle_name} {user.last_name}"
+    except (User.DoesNotExist, KeyError):
+        # Nếu không tìm thấy User (do reset DB hoặc lỗi ID), xóa session và bắt đăng nhập lại
+        return redirect('core:logout')
+
     context = {
         'page_title': 'Chào mừng',
-        'user_name': user_name # Truyền user_name vào template
+        'user_name': user_name
     }
-
     return render(request, 'churn_predict/welcome.html', context)
 
 
@@ -432,7 +433,6 @@ def explain_lime_view(request):
         # 6. Biến đổi dữ liệu nhập vào
         instance_df = pd.DataFrame([data_dict])
         instance_transformed = preprocessor.transform(instance_df)
-
         # 7. Chạy giải thích (CHẬM)
         predict_fn = lambda x: classifier.predict_proba(x)
         exp = explainer.explain_instance(
@@ -441,29 +441,14 @@ def explain_lime_view(request):
             num_features=10
         )
 
-
-        # 8. Lưu kết quả LIME ra file HTML tạm
+        # 8. LẤY CHUỖI HTML (KHÔNG LƯU FILE NỮA)
         html_content = exp.as_html()
 
-        # Tạo một tên file tạm thời, dùng ID user để tránh xung đột
-        user_id = request.session.get('user_id', 'temp')
-        filename = f'lime_explain_{user_id}.html'
-
-        # Đường dẫn để LƯU file (file system path)
-        save_dir = settings.BASE_DIR / "static" / "explanations" / "lime"
-        save_dir.mkdir(parents=True, exist_ok=True)
-        save_path = save_dir / filename
-
-        with open(save_path, 'w', encoding='utf-8') as f:
-            f.write(html_content)
-
-        # 9. Trả về ĐƯỜNG DẪN (URL) của file đó
-        # Thêm "cache-buster" (dấu ?v=...) để đảm bảo trình duyệt
-        # luôn tải file mới nhất, không dùng file cũ
-        cache_buster = f"?v={int(time.time())}"
-        file_url = static(f'explanations/lime/{filename}') + cache_buster
-
-        return JsonResponse({'success': True, 'url': file_url})
+        # 9. TRẢ VỀ JSON CHỨA NỘI DUNG HTML
+        return JsonResponse({
+            'success': True, 
+            'html_content': html_content  # Gửi thẳng chuỗi HTML về
+        })
 
     except Exception as e:
         print(f"Lỗi khi chạy LIME: {e}")

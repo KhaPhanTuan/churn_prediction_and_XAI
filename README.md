@@ -1,3 +1,5 @@
+Link trải nghiệm website: https://churn-prediction-0hpa.onrender.com/
+
 📌 Tổng quan dự án:
 
 Dự án tập trung vào việc xây dựng mô hình học máy (Machine Learning) để phát hiện sớm những khách hàng có nguy cơ rời bỏ dịch vụ tài chính (Customer Churn). Điểm nổi bật của dự án là việc tích hợp các phương pháp Explainable AI (XAI) như SHAP và LIME, giúp doanh nghiệp không chỉ biết ai sẽ rời đi mà còn hiểu rõ tại sao họ đưa ra quyết định đó.
